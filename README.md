@@ -159,4 +159,4 @@ A API expõe os seguintes endpoints para manipulação das tarefas:
 
 ## ⚖️ Licença
 
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.md) para mais detalhes.
+Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE.txt) para mais detalhes.
