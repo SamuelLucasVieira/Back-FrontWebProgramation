@@ -1,0 +1,12 @@
+# Configuration file example
+
+service_name: "API DB"
+configuration_parameters:
+  - user: postgres
+  - host: localhost
+  - database: databaseApi
+  - password : 123
+  - port : 5432
+  - debug: True
+  - host: "0.0.0.0"
+  - port: 5000
