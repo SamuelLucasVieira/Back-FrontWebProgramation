@@ -1,6 +1,6 @@
 # Imports atualizados para a nova estrutura
 from src.config.database import get_db_cursor
-from src.models.auth import get_password_hash
+from src.core.security import get_password_hash 
 
 from psycopg2.extras import DictCursor
 

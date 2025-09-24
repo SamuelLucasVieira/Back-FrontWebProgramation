@@ -9,7 +9,7 @@ from typing import Optional, List
 
 from src.models import crud
 from src.config import schemas
-from src.core.security import verify_password  # <== IMPORT a função do novo local
+from src.core.security import verify_password 
 
 # REMOVA as linhas de código de 'pwd_context', 'get_password_hash', 
 # e 'verify_password' deste arquivo.

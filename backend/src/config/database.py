@@ -10,10 +10,7 @@ def get_db_config() -> dict:
     Lê o arquivo de configuração YAML e retorna um dicionário com os parâmetros do banco.
     """
     try:
-        # MUDANÇA 2: Criamos um caminho robusto para o config.yaml na raiz do projeto.
-        # Isso funciona independentemente de onde o script é executado.
-        # (src/config/database.py -> src/ -> raiz)
-        config_path = Path(__file__).parent.parent.parent / 'config.yaml'
+        config_path = Path(__file__).parent / 'config.yaml'
 
         with open(config_path, 'r') as f:
             app_config = yaml.safe_load(f)
