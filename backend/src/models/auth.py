@@ -9,10 +9,7 @@ from typing import Optional, List
 
 from src.models import crud
 from src.config import schemas
-from src.core.security import verify_password 
-
-# REMOVA as linhas de código de 'pwd_context', 'get_password_hash', 
-# e 'verify_password' deste arquivo.
+from src.core.security import verify_password, get_password_hash
 
 # ... o resto do seu código em auth.py permanece o mesmo
 # Exemplo de uso:

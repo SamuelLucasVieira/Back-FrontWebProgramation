@@ -16,6 +16,8 @@ CREATE TYPE user_role AS ENUM (
 
 CREATE TYPE task_status AS ENUM (
     'pendente',
+    'em_andamento',
+    'em_revisao',
     'concluida'
 );
 
