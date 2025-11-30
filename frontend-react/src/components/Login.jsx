@@ -38,11 +38,19 @@ function Login({ onLogin }) {
           onLogin(data.access_token, { username, role: 'visualizacao' });
         }
       } else {
-        setError('Usuário ou senha incorretos');
+        if (response.status === 401) {
+          setError('Usuário ou senha incorretos');
+        } else {
+          setError(`Erro do servidor: ${response.status} ${response.statusText}`);
+        }
       }
     } catch (error) {
       console.error('Erro ao fazer login:', error);
-      setError('Erro ao conectar com o servidor');
+      if (error.message === 'Failed to fetch') {
+        setError(`Não foi possível conectar ao servidor. Verifique se o backend está rodando em ${API_URL}`);
+      } else {
+        setError(`Erro ao conectar com o servidor: ${error.message}`);
+      }
     }
   };
 
@@ -89,9 +97,11 @@ function Login({ onLogin }) {
             Entrar
           </button>
         </form>
-        <div className="mt-4 text-sm text-gray-600 text-center">
-          <p>Usuário padrão: admin</p>
-          <p>Senha padrão: admin123</p>
+        <div className="mt-4 text-sm text-gray-600 text-center space-y-1">
+          <p className="font-semibold">Credenciais padrão:</p>
+          <p>👑 Admin: admin / admin123</p>
+          <p>📊 Gerencial: gerencial / gerencial123</p>
+          <p>👁️ Usuário: usuario / usuario123</p>
         </div>
       </div>
     </div>

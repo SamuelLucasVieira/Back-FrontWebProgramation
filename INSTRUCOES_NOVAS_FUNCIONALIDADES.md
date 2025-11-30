@@ -43,15 +43,24 @@ Interface completa para gerenciamento de usuários com controle de acesso por pe
 
 ## 🚀 Como Usar
 
-### Passo 1: Atualizar o Banco de Dados
+### Passo 1: Configurar o Banco de Dados
 
-Se você já tem um banco de dados existente, execute o script de migração:
+**✨ Inicialização Automática (Recomendado):**
 
-```sql
--- Execute o arquivo: backend/src/models/migrate_kanban.sql
+As tabelas são criadas **automaticamente** quando você iniciar o servidor FastAPI pela primeira vez. Apenas certifique-se de que:
+- O PostgreSQL está rodando
+- As credenciais no arquivo `backend/src/config/config.yaml` estão corretas
+
+**Inicialização Manual (Opcional):**
+
+Se preferir criar as tabelas manualmente, você pode executar:
+
+```bash
+cd backend
+python init_database.py
 ```
 
-Ou se for criar um novo banco do zero, execute:
+Ou executar o script SQL diretamente:
 
 ```sql
 -- Execute o arquivo: backend/src/models/scripts.sql
@@ -76,10 +85,23 @@ npm run dev
 ### Passo 4: Acessar o Sistema
 
 1. Acesse `http://localhost:5173` (ou a porta que o Vite indicar)
-2. Faça login com:
-   - **Username:** admin
-   - **Senha:** admin123
-3. Explore as funcionalidades!
+2. Faça login com uma das credenciais padrão:
+
+   **👑 Administrador:**
+   - Username: `admin`
+   - Senha: `admin123`
+   
+   **📊 Gerencial (Gestão):**
+   - Username: `gerencial`
+   - Senha: `gerencial123`
+   
+   **👁️ Usuário (Visualização):**
+   - Username: `usuario`
+   - Senha: `usuario123`
+
+3. Explore as funcionalidades! Cada perfil tem permissões diferentes.
+
+> 💡 **Nota:** Consulte `backend/CREDENCIAIS_USUARIOS.md` para mais detalhes sobre as permissões de cada perfil.
 
 ## 📝 Endpoints da API
 

@@ -13,7 +13,7 @@ function TaskItem({ task, onUpdateTask, onDeleteTask }) {
   };
 
   const handleToggleStatus = () => {
-    const newStatus = task.status === 'pendente' ? 'concluída' : 'pendente';
+    const newStatus = task.status === 'pendente' ? 'concluida' : 'pendente';
     onUpdateTask({ ...task, status: newStatus });
   };
   
@@ -44,7 +44,7 @@ function TaskItem({ task, onUpdateTask, onDeleteTask }) {
   // Visualização Padrão
   return (
     <li className="p-4 bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-      <div className={`flex-grow ${task.status === 'concluída' ? 'text-gray-400 line-through' : ''}`}>
+      <div className={`flex-grow ${task.status === 'concluida' ? 'text-gray-400 line-through' : ''}`}>
         <p className="font-bold text-gray-800 break-words">{task.titulo}</p>
         <p className="text-sm text-gray-600 break-words">{task.descricao}</p>
       </div>

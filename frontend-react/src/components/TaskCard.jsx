@@ -1,7 +1,7 @@
 // src/components/TaskCard.jsx
 import { useState, useEffect } from 'react';
 
-function TaskCard({ task, onDragStart, onUpdateTask, onDeleteTask, users = [], canAssignTasks = false, currentUserRole = 'visualizacao' }) {
+function TaskCard({ task, onDragStart, onUpdateTask, onDeleteTask, onShowDetails, users = [], canAssignTasks = false, currentUserRole = 'visualizacao' }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(task.titulo);
   const [editedDesc, setEditedDesc] = useState(task.descricao);
@@ -85,18 +85,29 @@ function TaskCard({ task, onDragStart, onUpdateTask, onDeleteTask, users = [], c
     );
   }
 
+  const handleCardClick = (e) => {
+    // Não abrir modal se clicar em botões ou selects
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'SELECT' || e.target.closest('button') || e.target.closest('select')) {
+      return;
+    }
+    if (onShowDetails) {
+      onShowDetails(task);
+    }
+  };
+
   return (
     <div
       draggable={true}
       onDragStart={(e) => onDragStart(e, task)}
-      className="bg-white p-3 rounded-lg shadow-md cursor-move hover:shadow-lg transition-shadow border border-gray-200"
+      onClick={handleCardClick}
+      className="bg-white p-3 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow border border-gray-200"
     >
       <div className="mb-2">
         <p className="font-semibold text-gray-800 text-sm break-words">
           {task.titulo}
         </p>
         {task.descricao && (
-          <p className="text-xs text-gray-600 mt-1 break-words">
+          <p className="text-xs text-gray-600 mt-1 break-words line-clamp-2">
             {task.descricao}
           </p>
         )}
@@ -107,7 +118,7 @@ function TaskCard({ task, onDragStart, onUpdateTask, onDeleteTask, users = [], c
         )}
       </div>
       
-      <div className="flex flex-wrap gap-1 mt-3">
+      <div className="flex flex-wrap gap-1 mt-3" onClick={(e) => e.stopPropagation()}>
         <select
           value={task.status}
           onChange={(e) => handleStatusChange(e.target.value)}
@@ -123,19 +134,28 @@ function TaskCard({ task, onDragStart, onUpdateTask, onDeleteTask, users = [], c
         {currentUserRole !== 'visualizacao' && (
           <>
             <button
-              onClick={() => setIsEditing(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsEditing(true);
+              }}
               className="text-xs px-2 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
             >
               Editar
             </button>
             <button
-              onClick={() => onDeleteTask(task.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteTask(task.id);
+              }}
               className="text-xs px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600"
             >
               Excluir
             </button>
           </>
         )}
+      </div>
+      <div className="mt-2 text-xs text-gray-400 text-center" onClick={(e) => e.stopPropagation()}>
+        Clique no card para ver detalhes
       </div>
     </div>
   );

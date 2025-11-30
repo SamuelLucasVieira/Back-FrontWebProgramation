@@ -9,7 +9,7 @@ const STATUSES = [
   { id: 'concluida', label: 'Concluída', color: 'bg-green-200' }
 ];
 
-function KanbanBoard({ tasks, onUpdateTask, onDeleteTask, users = [], canAssignTasks = false, currentUserRole = 'visualizacao' }) {
+function KanbanBoard({ tasks, onUpdateTask, onDeleteTask, onShowTaskDetails, users = [], canAssignTasks = false, currentUserRole = 'visualizacao' }) {
   const [draggedTask, setDraggedTask] = useState(null);
 
   const handleDragStart = (e, task) => {
@@ -66,6 +66,7 @@ function KanbanBoard({ tasks, onUpdateTask, onDeleteTask, users = [], canAssignT
                 onDragStart={handleDragStart}
                 onUpdateTask={onUpdateTask}
                 onDeleteTask={onDeleteTask}
+                onShowDetails={onShowTaskDetails}
                 users={users}
                 canAssignTasks={canAssignTasks}
                 currentUserRole={currentUserRole}

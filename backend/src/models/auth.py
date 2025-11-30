@@ -7,7 +7,7 @@ from typing import Optional, List
 
 # ... other imports like fastapi, timedelta, etc.
 
-from src.models import crud
+from src.repositories import UserRepository
 from src.config import schemas
 from src.core.security import verify_password, get_password_hash
 
@@ -55,7 +55,8 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     except JWTError:
         raise credentials_exception
     
-    user = crud.get_user_by_username(username=token_data.username)
+    user_repository = UserRepository()
+    user = user_repository.find_by_username(username=token_data.username)
     if user is None:
         raise credentials_exception
         

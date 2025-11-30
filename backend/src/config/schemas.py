@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
 from typing import Optional, List
 
 # --- Esquemas de Tarefa ---
@@ -15,9 +15,9 @@ class Task(TaskBase):
     owner_id: int
     owner_username: Optional[str] = None  # Nome do usuário responsável
     status: str
+    created_at: Optional[str] = None  # Data de criação da tarefa
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Esquemas de Usuário ---
 class UserBase(BaseModel):
@@ -39,8 +39,7 @@ class User(UserBase):
     role: str
     created_at: Optional[str] = None
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- Esquemas de Token ---
 class Token(BaseModel):

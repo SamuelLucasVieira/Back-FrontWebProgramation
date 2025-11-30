@@ -4,6 +4,8 @@ import Login from './components/Login';
 import TaskForm from './components/TaskForm';
 import KanbanBoard from './components/KanbanBoard';
 import UserManager from './components/UserManager';
+import TaskDetailsModal from './components/TaskDetailsModal';
+import NotificationBell from './components/NotificationBell';
 
 const API_URL = 'http://127.0.0.1:3000';
 
@@ -13,6 +15,9 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [users, setUsers] = useState([]);
   const [activeTab, setActiveTab] = useState('tasks');
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [notificationRefreshTrigger, setNotificationRefreshTrigger] = useState(0);
 
   const getAuthHeaders = () => ({
     'Content-Type': 'application/json',
@@ -125,6 +130,9 @@ function App() {
       });
       if (response.ok) {
         fetchTasks();
+        // Disparar atualização de notificações após atualizar tarefa
+        // Isso garante que notificações sejam atualizadas imediatamente
+        setNotificationRefreshTrigger(prev => prev + 1);
       }
     } catch (error) {
       console.error("Erro ao atualizar tarefa:", error);
@@ -169,6 +177,33 @@ function App() {
               🚀 Gerenciador de Tarefas
             </h1>
             <div className="flex items-center gap-4">
+              <NotificationBell 
+                token={token} 
+                currentUser={currentUser}
+                refreshTrigger={notificationRefreshTrigger}
+                onTaskClick={(taskId) => {
+                  // Buscar a tarefa e abrir o modal
+                  const task = tasks.find(t => t.id === taskId);
+                  if (task) {
+                    setSelectedTask(task);
+                    setIsTaskModalOpen(true);
+                  } else {
+                    // Se a tarefa não estiver na lista, buscar da API
+                    fetch(`${API_URL}/tasks/${taskId}`, {
+                      headers: getAuthHeaders()
+                    })
+                      .then(res => res.json())
+                      .then(taskData => {
+                        setSelectedTask(taskData);
+                        setIsTaskModalOpen(true);
+                      })
+                      .catch(err => {
+                        console.error('Erro ao buscar tarefa:', err);
+                        alert('Erro ao abrir tarefa. Tente atualizar a página.');
+                      });
+                  }
+                }}
+              />
               <span className="text-sm text-gray-600">
                 Olá, <strong>{currentUser?.username}</strong> ({currentUser?.role})
               </span>
@@ -223,6 +258,23 @@ function App() {
             )}
             <KanbanBoard
               tasks={tasks}
+              onUpdateTask={handleUpdateTask}
+              onDeleteTask={handleDeleteTask}
+              onShowTaskDetails={(task) => {
+                setSelectedTask(task);
+                setIsTaskModalOpen(true);
+              }}
+              users={users}
+              canAssignTasks={canAssignTasks}
+              currentUserRole={currentUser?.role || 'visualizacao'}
+            />
+            <TaskDetailsModal
+              task={selectedTask}
+              isOpen={isTaskModalOpen}
+              onClose={() => {
+                setIsTaskModalOpen(false);
+                setSelectedTask(null);
+              }}
               onUpdateTask={handleUpdateTask}
               onDeleteTask={handleDeleteTask}
               users={users}
